@@ -1,0 +1,28 @@
+# Python cache e build
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Dados temporários
+*.log
+*.tmp
+*.csv
+*.json
+
+# Configuração de IDEs
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
