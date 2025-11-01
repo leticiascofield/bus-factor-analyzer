@@ -1,4 +1,8 @@
-# **Bus Factor** focado em metadados
+# Bus Factor Analyzer
+
+Ferramenta de linha de comando para detectar arquivos com risco de monopólio de conhecimento (bus factor baixo) em repositórios Git, a partir da mineração de metadados de commits e autores.
+
+<br>
 
 ## Membros do Grupo
 - Ana Luisa Messias Ferreira Mendes
@@ -10,30 +14,46 @@
 
 ## Explicação do sistema
 
-Vamos desenvolver uma ferramenta de **linha de comando (CLI)** para estimar o risco de **monopólio de conhecimento** por arquivo (“bus factor” baixo) usando **metadados** de atividade: commits, autores, arquivos alterados e **pull requests**.
 
-**Seleção de repositórios:** utilizaremos o **SEART GitHub Search Tool (GHS)** para montar a amostra com estes critérios fixos:
+O bus-factor-analyzer identifica arquivos de um repositório em que há concentração excessiva de autoria, isto é, quando um único desenvolvedor domina grande parte das modificações recentes.  
+Esse tipo de concentração é um risco de manutenção e evolução, pois o conhecimento crítico fica centralizado em poucas pessoas.
 
-* mais de **10 estrelas**
-* pelo menos **300 commits**
-* pelo menos **15 colaboradores**
+A ferramenta faz isso analisando:
+- Commits e linhas modificadas por autor em uma janela temporal configurável.  
+- Distribuição da autoria por arquivo, destacando os casos em que um autor domina ≥ limiar definido (ex: 50%)
+
+O resultado é uma lista de arquivos “de risco”, com informações sobre o autor dominante e métricas de dominância.
+
+<br>
+
 
 **Funcionamento:**
 
-1. **Coleta (Git):** dentro de uma janela temporal de **90 dias**, levantar por arquivo a atividade recente: quem alterou, quantas vezes alterou e quantas **linhas adicionadas/removidas**.
-2. **Coleta (PRs):** obter, por autor, a **proporção de PRs aceitas** e demais indicadores de participação no fluxo de revisão.
-3. **Cálculo do bus factor por arquivo:** identificar o **autor dominante** e medir sua participação sob **dois ângulos** — **por quantidade de commits** e **por volume de mudanças** (linhas). O arquivo é marcado como **de risco** quando a dominância do autor **ultrapassa 50%** em pelo menos um desses ângulos.
-4. **Relatórios:** gerar **tabela no terminal** e exportação **JSON/CSV** listando arquivos de risco com autor dominante, nível de dominância, atividade no período e indicadores de PRs do autor.
-5. **Escopo da análise:** focaremos o diretório **`src/`** e **ignoraremos `tests/`** para reduzir ruído de alterações de teste.
+1. **Coleta (Git):** dentro de uma janela temporal configurável (padrão: 90 dias), extrai:
+   - Autores de cada arquivo modificado;
+   - Quantidade de commits e linhas alteradas por autor.
+2. **Cálculo de dominância:** identifica o autor dominante em cada arquivo e calcula sua proporção de contribuição por:
+   - Quantidade de commits;
+   - Volume de linhas modificadas.
+3. **Critério de risco:** um arquivo é marcado como de risco quando o autor dominante ultrapassa o limiar definido (padrão: 50%) em qualquer das métricas.
+4. **Relatórios:** gera uma tabela contendo:
+   - Caminho do arquivo;
+   - Autor dominante;
+   - Percentuais de dominância (commits e linhas);
+   - Número total de commits e linhas alteradas no período.
+  
+<br>
 
-**Parâmetros do sistema (valores definidos):**
+## Parâmetros do sistema
 
-* **Janela temporal:** 90 dias
-* **Limiar de dominância:** 50%
-* **Métrica de dominância:** commits **e** linhas
-* **Filtros de caminho:** incluir `src/` e excluir `tests/`
-
-**Cuidados:** renomeações/movimentações de arquivos podem afetar o histórico; a análise de PRs está sujeita às políticas de revisão e limites da API do GitHub; o foco é atividade e autoria, não análise semântica do código.
+| Parâmetro | Descrição | Padrão |
+|------------|------------|--------|
+| `REPO...` | Um ou mais repositórios (URL, nome GitHub ou caminho local) | - |
+| `--days` | Janela temporal de análise (em dias) | `90` |
+| `--dominance-threshold` | Limiar de dominância para marcar risco (0–1) | `0.5` |
+| `--include` | Caminhos a incluir (glob) | `**/*` |
+| `--exclude` | Caminhos a excluir (glob) | `tests/**`, `docs/**`, `.github/**` |
+| `--format` | Formato de saída (`table`, `json`, `csv`) | `table` |
 
 <br>
 
@@ -41,11 +61,10 @@ Vamos desenvolver uma ferramenta de **linha de comando (CLI)** para estimar o ri
 
 * **Seleção de repositórios:**
 
-  * **SEART GitHub Search Tool (GHS)** — aplicação dos filtros (estrelas, commits, colaboradores) e seleção dos projetos.
+  * **SEART GitHub Search Tool (GHS)** — usada apenas para selecionar projetos de teste com filtros (estrelas, commits, colaboradores).
 * **Coleta de metadados:**
 
   * **PyDriller** — varrer o histórico Git local para extrair commits, arquivos modificados e linhas adicionadas/removidas.
-  * **GitHub API (REST/GraphQL)** com **PyGithub** — obter dados de pull requests e metadados complementares.
   * **GitPython** — suporte a operações Git locais.
 * **CLI e relatórios:**
 
