@@ -41,7 +41,7 @@ class RiskAnalysisResult:
 
 @dataclass
 class AnalysisConfig:
-    days: int = 90
+    days: int = 9000
     dominance_threshold: float = 0.6 # default
     include_patterns: List[str] = None
     exclude_patterns: List[str] = None

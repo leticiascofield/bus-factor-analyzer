@@ -37,7 +37,7 @@ class BusFactorCLI:
     def analyze_repositories(
             self,
             repos: List[str],
-            days: int = 90,
+            days: int = 9000,
             dominance_threshold: float = 0.5,
             include: List[str] = None,
             exclude: List[str] = None,
@@ -78,7 +78,7 @@ cli = BusFactorCLI()
 @app.command("analyze")
 def analyze(
     repos: List[str] = typer.Argument(..., metavar="REPO...", help="Um ou mais repositórios (URL, owner/repo ou caminho local)"),
-    days: int = typer.Option(90, "--days", help="Janela temporal (dias)"),
+    days: int = typer.Option(9000, "--days", help="Janela temporal (dias)"),
     dominance_threshold: float = typer.Option(0.5, "--dominance-threshold", help="Limiar de dominância (0–1)"),
     include: List[str] = typer.Option(None, "--include", help="Globs para incluir (pode repetir)"),
     exclude: List[str] = typer.Option(None, "--exclude", help="Globs para excluir (pode repetir)"),
