@@ -42,4 +42,4 @@ class ReportGenerator:
                 result.authors_preview
             )
 
-            self.console.print(table)
+        self.console.print(table)
