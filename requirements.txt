@@ -1,0 +1,4 @@
+pydriller
+rich
+pandas
+python-dateutil
