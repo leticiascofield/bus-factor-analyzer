@@ -17,7 +17,7 @@ class RepositoryManager:
                     "URL do repositório inválida, apenas urls do github sendo repositórios públicos são validos")
 
             subprocess.run(
-                ['git', 'clone', '--depth', '1', repo_url, temp_dir],
+                ['git', 'clone', repo_url, temp_dir],
                 check=True,
                 capture_output=True,
                 text=True
