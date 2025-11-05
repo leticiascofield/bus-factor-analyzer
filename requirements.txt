@@ -3,3 +3,6 @@ rich
 pandas
 python-dateutil
 typer
+pytest
+pytest-cov
+GitPython
