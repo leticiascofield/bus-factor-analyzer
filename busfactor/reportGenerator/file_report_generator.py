@@ -4,7 +4,7 @@ import sys
 from typing import List
 from rich.console import Console
 from rich.table import Table
-
+from busfactor.reportGenerator.html_report_generator import HTMLReportGenerator
 from busfactor.models import RiskAnalysisResult
 
 
@@ -13,8 +13,10 @@ class ReportGenerator:
         self.console = Console()
 
     def generate_report(self, results: List[RiskAnalysisResult], format: str):
-        if format == "table":
-            self._generate_table_report(results)
+        self._generate_table_report(results)
+        if format == "html":
+            html_gen = HTMLReportGenerator()
+            html_gen.generate_html(results)
         else:
             raise ValueError(f"Formato não suportado: {format}")
 
