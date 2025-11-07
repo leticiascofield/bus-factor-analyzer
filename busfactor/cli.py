@@ -54,7 +54,7 @@ class BusFactorCLI:
         all_results = []
 
         for repo in repos:
-            console.print(f"🔍 Analisando repositório: [bold]{repo}[/bold]")
+            console.print(f"Analisando repositório: [bold]{repo}[/bold]")
 
             try:
                 repo_path = self.repository_manager.clone_repository(repo)

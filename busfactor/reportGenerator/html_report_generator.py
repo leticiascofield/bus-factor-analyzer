@@ -11,7 +11,7 @@ class HTMLReportGenerator:
 
     def generate_html(self, results: List[RiskAnalysisResult], output_path: str = "report.html"):
         if not results:
-            print("⚠️ Nenhum resultado disponível para gerar HTML.")
+            print("Nenhum resultado disponível para gerar HTML.")
             return
 
         data = [{
@@ -28,7 +28,6 @@ class HTMLReportGenerator:
 
         df = pd.DataFrame(data)
 
-                # --- GRÁFICO 1: Arquivos em risco por autor dominante
         fig1_data = df["Autor Dominante (Commits)"].value_counts().reset_index()
         fig1_data.columns = ["Autor", "Arquivos em Risco"]
 
@@ -43,7 +42,6 @@ class HTMLReportGenerator:
         fig1.update_traces(textposition="outside")
         fig1.update_layout(width=1100, height=600, font=dict(size=13))
 
-        # --- GRÁFICO 2: Média de dominância por autor
         dominance_avg = (
             df.groupby("Autor Dominante (Commits)")[["Dominância (Commits)", "Dominância (Linhas)"]]
             .mean()
@@ -142,5 +140,5 @@ class HTMLReportGenerator:
         """
 
         Path(output_path).write_text(html_content, encoding="utf-8")
-        print(f"✅ Relatório HTML gerado com sucesso: {output_path}")
-        print(f"📂 Abra o arquivo no navegador: file://{Path(output_path).resolve()}")
+        print(f"Relatório HTML gerado com sucesso: {output_path}")
+        print(f"Abra o arquivo no navegador: file://{Path(output_path).resolve()}")
