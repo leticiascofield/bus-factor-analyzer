@@ -61,7 +61,6 @@ class HTMLReportGenerator:
         )
         fig2.update_layout(width=1100, height=600, font=dict(size=13))
 
-        # --- GRÁFICO 3: Top 5 autores dominantes
         top_authors = fig1_data.head(5)
         fig3 = px.pie(
             top_authors,
@@ -71,14 +70,18 @@ class HTMLReportGenerator:
         )
         fig3.update_layout(width=1100, height=600, font=dict(size=13))
 
+    
         fig4 = px.histogram(
-            df,
+            df[df["Total Commits"] > 1],
             x="Dominância (Commits)",
-            nbins=10,
-            title="Distribuição de Dominância (Commits)",
+            nbins=20,
+            range_x=[0, 100],
+            title="Distribuição de Dominância (Commits) — arquivos com >1 commit",
             color_discrete_sequence=["#073769"]
         )
-        fig4.update_layout(width=1100, height=500, font=dict(size=12))
+        fig4.update_layout(width=900, height=380, font=dict(size=11))
+
+
 
         html_content = f"""
         <html>
@@ -108,23 +111,30 @@ class HTMLReportGenerator:
                 <h1 class="mb-4 text-center">Relatório de Análise de Bus Factor</h1>
                 <p>Foram encontrados <b>{len(df)}</b> arquivos de risco.</p>
 
-                <h3>📊 Arquivos em risco por autor</h3>
+                <h3>Arquivos em risco por autor</h3>
+                <p>Esse gráfico mostra quantos arquivos estão sob o domínio de cada autor,
+                considerando o autor dominante baseado no número de commits.</p>
                 {fig1.to_html(full_html=False, include_plotlyjs='cdn')}
                 <p></p>
 
-                <h3>⚖️ Dispersão de dominância</h3>
+                <h3>Dispersão de dominância</h3>
+                <p>Esse gráfico mostra o quanto cada autor domina, em média, 
+                os arquivos em que ele aparece como o autor dominante, 
+                sob duas perspectivas diferentes:</p>
+                <p>• <b>Dominância por Commits:</b> Percentual de commits feitos por esse autor em relação ao total de commits dos outros autores nos arquivos em que ele é dominante.</p>
+                <p>• <b>Dominância por Linhas:</b> Percentual de linhas modificadas (adições/remoções) por esse autor em seus arquivos.</p>
                 {fig2.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
-                <h3>📈 Distribuição de dominância (Commits)</h3>
+                <h3>Distribuição de dominância (Commits)</h3>
                 {fig4.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
-                <h3>🏆 Top 5 autores dominantes</h3>
+                <h3>Top 5 autores dominantes</h3>
                 {fig3.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
-                <h3>📁 Tabela de Arquivos de Risco</h3>
+                <h3>Tabela de Arquivos de Risco</h3>
                 {df.to_html(classes="table table-striped table-bordered small-table", index=False)}
             </div>
         </body>
