@@ -72,12 +72,18 @@ class HTMLReportGenerator:
         fig4 = px.histogram(
             df[df["Total Commits"] > 1],
             x="Dominância (Commits)",
-            nbins=20,
-            range_x=[0, 100],
+            nbins=20,  
+            range_x=[0, 105],  
             title="Distribuição de Dominância (Commits) — arquivos com >1 commit",
             color_discrete_sequence=["#073769"]
         )
-        fig4.update_layout(width=900, height=380, font=dict(size=11))
+        fig4.update_layout(
+            width=1100,  
+            height=500,  
+            font=dict(size=12),
+            xaxis_title="Dominância (Commits)",
+            yaxis_title="Quantidade de Arquivos"
+        )
 
 
 
@@ -110,13 +116,13 @@ class HTMLReportGenerator:
                 <p>Foram encontrados <b>{len(df)}</b> arquivos de risco.</p>
 
                 <h3>Arquivos em risco por autor</h3>
-                <p>Esse gráfico mostra quantos arquivos estão sob o domínio de cada autor,
+                <p>Este gráfico mostra quantos arquivos estão sob o domínio de cada autor,
                 considerando o autor dominante baseado no número de commits.</p>
                 {fig1.to_html(full_html=False, include_plotlyjs='cdn')}
                 <p></p>
 
                 <h3>Dispersão de dominância</h3>
-                <p>Esse gráfico mostra o quanto cada autor domina, em média, 
+                <p>Este gráfico mostra o quanto cada autor domina, em média, 
                 os arquivos em que ele aparece como o autor dominante, 
                 sob duas perspectivas diferentes:</p>
                 <p>• <b>Dominância por Commits:</b> Percentual de commits feitos por esse autor em relação ao total de commits dos outros autores nos arquivos em que ele é dominante.</p>
@@ -125,14 +131,25 @@ class HTMLReportGenerator:
                 <p></p>
 
                 <h3>Distribuição de dominância (Commits)</h3>
+                <p>Este histograma mostra como a dominância por commits está distribuída entre os arquivos 
+                que possuem mais de um commit.</p>
+                <p>Cada barra representa quantos arquivos têm um determinado nível de dominância — ou seja, 
+                a porcentagem de commits feitos pelo autor principal.</p>
+                <p>Valores próximos de 100% indicam arquivos praticamente controlados por um único autor, 
+                enquanto valores intermediários (40–60%) sugerem colaboração maior entre desenvolvedores.</p>
+                <p>Uma concentração alta em 100% pode indicar alto risco de bus factor, pois poucos autores 
+                detêm conhecimento sobre muitos arquivos.</p>
                 {fig4.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
                 <h3>Top 5 autores dominantes</h3>
+                <p>Este gráfico mostra os 5 autores que dominam o maior número de arquivos em risco.</p>
                 {fig3.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
                 <h3>Tabela de Arquivos de Risco</h3>
+                <p>A tabela abaixo lista todos os arquivos identificados como de risco,
+                juntamente com suas métricas associadas.</p>
                 {df.to_html(classes="table table-striped table-bordered small-table", index=False)}
             </div>
         </body>
