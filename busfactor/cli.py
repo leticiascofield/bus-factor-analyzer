@@ -54,7 +54,7 @@ class BusFactorCLI:
         all_results = []
 
         for repo in repos:
-            console.print(f"🔍 Analisando repositório: [bold]{repo}[/bold]")
+            console.print(f"Analisando repositório: [bold]{repo}[/bold]")
 
             try:
                 repo_path = self.repository_manager.clone_repository(repo)
@@ -82,7 +82,7 @@ def analyze(
     dominance_threshold: float = typer.Option(0.5, "--dominance-threshold", help="Limiar de dominância (0–1)"),
     include: List[str] = typer.Option(None, "--include", help="Globs para incluir (pode repetir)"),
     exclude: List[str] = typer.Option(None, "--exclude", help="Globs para excluir (pode repetir)"),
-    format: str = typer.Option("table", "--format", help="table|json|csv"),
+    format: str = typer.Option("table", "--format", help="table|json|csv|html"),
 ):
 
     cli.analyze_repositories(
