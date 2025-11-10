@@ -74,7 +74,7 @@ class HTMLReportGenerator:
             x="Dominância (Commits)",
             nbins=20,  
             range_x=[0, 105],  
-            title="Distribuição de Dominância (Commits) — arquivos com >1 commit",
+            title="Distribuição de Dominância (Commits) em arquivos com mais de 1 commit",
             color_discrete_sequence=["#073769"]
         )
         fig4.update_layout(
@@ -132,18 +132,18 @@ class HTMLReportGenerator:
 
                 <h3>Distribuição de dominância (Commits)</h3>
                 <p>Este histograma mostra como a dominância por commits está distribuída entre os arquivos 
-                que possuem mais de um commit.</p>
-                <p>Cada barra representa quantos arquivos têm um determinado nível de dominância — ou seja, 
+                que possuem mais de um commit. Cada barra representa quantos arquivos têm um determinado nível de dominância, ou seja, 
                 a porcentagem de commits feitos pelo autor principal.</p>
                 <p>Valores próximos de 100% indicam arquivos praticamente controlados por um único autor, 
-                enquanto valores intermediários (40–60%) sugerem colaboração maior entre desenvolvedores.</p>
+                enquanto valores intermediários (40 a 60%) sugerem colaboração maior entre desenvolvedores.</p>
                 <p>Uma concentração alta em 100% pode indicar alto risco de bus factor, pois poucos autores 
                 detêm conhecimento sobre muitos arquivos.</p>
                 {fig4.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
                 <h3>Top 5 autores dominantes</h3>
-                <p>Este gráfico mostra os 5 autores que dominam o maior número de arquivos em risco.</p>
+                <p>Este gráfico exibe os 5 autores que dominam o maior número de arquivos em risco
+                e a divisão da quantidade entre eles.</p>
                 {fig3.to_html(full_html=False, include_plotlyjs=False)}
                 <p></p>
 
