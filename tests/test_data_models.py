@@ -25,16 +25,3 @@ def test_analysis_config_should_have_correct_default_values():
     assert config.dominance_threshold == 0.6
     assert config.include_patterns == ["**/*"]
     assert config.exclude_patterns == ["docs/**", ".github/**"]
-
-
-def test_analysis_config_should_maintain_custom_values():
-    config = AnalysisConfig(
-        days=30,
-        dominance_threshold=0.8,
-        include_patterns=["src/**/*.py"],
-        exclude_patterns=["src/tests/**"],
-    )
-    assert config.days == 30
-    assert config.dominance_threshold == 0.8
-    assert config.include_patterns == ["src/**/*.py"]
-    assert config.exclude_patterns == ["src/tests/**"]

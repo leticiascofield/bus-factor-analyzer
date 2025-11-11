@@ -4,7 +4,7 @@
 
 ### Exemple
 
-- ` python3 -m busfactor.cli analyze https://github.com/leticiascofield/logical-expression-satisfiability --format html`
+- `python3 -m busfactor.cli analyze https://github.com/leticiascofield/logical-expression-satisfiability --format html`
 
 ### How to open HTML report
 
