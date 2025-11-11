@@ -57,6 +57,23 @@ O resultado é uma lista de arquivos “de risco”, com informações sobre o a
 
 <br>
 
+## Explicação das possíveis tecnologias utilizadas
+
+- **Seleção de repositórios:**
+
+  - **SEART GitHub Search Tool (GHS)** — usada apenas para selecionar projetos de teste com filtros (estrelas, commits, colaboradores).
+
+- **Coleta de metadados:**
+
+  - **PyDriller** — varrer o histórico Git local para extrair commits, arquivos modificados e linhas adicionadas/removidas.
+  - **GitPython** — suporte a operações Git locais.
+
+- **CLI e relatórios:**
+
+  - **Typer** — criação da interface de linha de comando e documentação de parâmetros.
+  - **Rich** — formatação de tabelas no terminal.
+  - **pandas** — agregações e exportação em **JSON/CSV**.
+
 ## Preparar o ambiente antes de rodar os testes
 
 1. Criar e ativar o ambiente virtual:
@@ -81,43 +98,31 @@ Para executar todos os testes do projeto, utilize o comando:
 pytest
 ```
 
-Para executar os testes com mais detalhes e visualizar a cobertura:
+Para executar os testes com mais detalhes (verbose):
 
 ```bash
 pytest -v
+```
+
+Para executar os testes e gerar relatório de cobertura:
+
+```bash
+pytest --cov=busfactor --cov-report=html
 ```
 
 Para executar um arquivo de testes específico:
 
 ```bash
 pytest tests/test_bus_factor_analyzer.py
-```
-
-Ou:
-
-```bash
-pytest tests/test_cli_analyze.py
-```
-
-Ou:
-
-```bash
+pytest tests/test_cli.py
 pytest tests/test_data_models.py
+pytest tests/test_report_generators.py
+pytest tests/test_repository_manager.py
+pytest tests/test_bus_factor_analyzer_edge_cases.py
 ```
 
-## Explicação das possíveis tecnologias utilizadas
+Para executar apenas um teste específico pelo nome:
 
-- **Seleção de repositórios:**
-
-  - **SEART GitHub Search Tool (GHS)** — usada apenas para selecionar projetos de teste com filtros (estrelas, commits, colaboradores).
-
-- **Coleta de metadados:**
-
-  - **PyDriller** — varrer o histórico Git local para extrair commits, arquivos modificados e linhas adicionadas/removidas.
-  - **GitPython** — suporte a operações Git locais.
-
-- **CLI e relatórios:**
-
-  - **Typer** — criação da interface de linha de comando e documentação de parâmetros.
-  - **Rich** — formatação de tabelas no terminal.
-  - **pandas** — agregações e exportação em **JSON/CSV**.
+```bash
+pytest tests/test_bus_factor_analyzer.py::test_nome_do_teste -v
+```
