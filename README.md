@@ -74,6 +74,18 @@ O resultado é uma lista de arquivos “de risco”, com informações sobre o a
   - **Rich** — formatação de tabelas no terminal.
   - **pandas** — agregações e exportação em **JSON/CSV**.
 
+## Para instalar as dependências
+
+- `pip3 install -r requirements.txt`
+
+### Exemplo de uso da ferramenta
+
+- `python3 -m busfactor.cli analyze https://github.com/leticiascofield/logical-expression-satisfiability --format html`
+
+### Como abrir o HTML gerado
+
+- Após a execução, abra o Explorador de Arquivos na pasta do projeto e acesse o arquivo gerado report.html para visualizar o resultado.
+
 ## Preparar o ambiente antes de rodar os testes
 
 1. Criar e ativar o ambiente virtual:
