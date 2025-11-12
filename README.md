@@ -5,6 +5,7 @@ Ferramenta de linha de comando para detectar arquivos com risco de monopólio de
 <br>
 
 ## Membros do Grupo
+
 - Ana Luisa Messias Ferreira Mendes
 - Davi Porto Araujo
 - Laura Oliveira Ribeiro
@@ -14,18 +15,17 @@ Ferramenta de linha de comando para detectar arquivos com risco de monopólio de
 
 ## Explicação do sistema
 
-
 O bus-factor-analyzer identifica arquivos de um repositório em que há concentração excessiva de autoria, isto é, quando um único desenvolvedor domina grande parte das modificações recentes.  
 Esse tipo de concentração é um risco de manutenção e evolução, pois o conhecimento crítico fica centralizado em poucas pessoas.
 
 A ferramenta faz isso analisando:
-- Commits e linhas modificadas por autor em uma janela temporal configurável.  
+
+- Commits e linhas modificadas por autor em uma janela temporal configurável.
 - Distribuição da autoria por arquivo, destacando os casos em que um autor domina ≥ limiar definido (ex: 50%)
 
 O resultado é uma lista de arquivos “de risco”, com informações sobre o autor dominante e métricas de dominância.
 
 <br>
-
 
 **Funcionamento:**
 
@@ -41,33 +41,100 @@ O resultado é uma lista de arquivos “de risco”, com informações sobre o a
    - Autor dominante;
    - Percentuais de dominância (commits e linhas);
    - Número total de commits e linhas alteradas no período.
-  
+
 <br>
 
 ## Parâmetros do sistema
 
-| Parâmetro | Descrição | Padrão |
-|------------|------------|--------|
-| `REPO...` | Um ou mais repositórios (URL, nome GitHub ou caminho local) | - |
-| `--days` | Janela temporal de análise (em dias) | `90` |
-| `--dominance-threshold` | Limiar de dominância para marcar risco (0–1) | `0.5` |
-| `--include` | Caminhos a incluir (glob) | `**/*` |
-| `--exclude` | Caminhos a excluir (glob) | `tests/**`, `docs/**`, `.github/**` |
-| `--format` | Formato de saída (`table`, `json`, `csv`) | `table` |
+| Parâmetro               | Descrição                                                   | Padrão                              |
+| ----------------------- | ----------------------------------------------------------- | ----------------------------------- |
+| `REPO...`               | Um ou mais repositórios (URL, nome GitHub ou caminho local) | -                                   |
+| `--days`                | Janela temporal de análise (em dias)                        | `90`                                |
+| `--dominance-threshold` | Limiar de dominância para marcar risco (0–1)                | `0.5`                               |
+| `--include`             | Caminhos a incluir (glob)                                   | `**/*`                              |
+| `--exclude`             | Caminhos a excluir (glob)                                   | `tests/**`, `docs/**`, `.github/**` |
+| `--format`              | Formato de saída (`table`, `json`, `csv`)                   | `table`                             |
 
 <br>
 
 ## Explicação das possíveis tecnologias utilizadas
 
-* **Seleção de repositórios:**
+- **Seleção de repositórios:**
 
-  * **SEART GitHub Search Tool (GHS)** — usada apenas para selecionar projetos de teste com filtros (estrelas, commits, colaboradores).
-* **Coleta de metadados:**
+  - **SEART GitHub Search Tool (GHS)** — usada apenas para selecionar projetos de teste com filtros (estrelas, commits, colaboradores).
 
-  * **PyDriller** — varrer o histórico Git local para extrair commits, arquivos modificados e linhas adicionadas/removidas.
-  * **GitPython** — suporte a operações Git locais.
-* **CLI e relatórios:**
+- **Coleta de metadados:**
 
-  * **Typer** — criação da interface de linha de comando e documentação de parâmetros.
-  * **Rich** — formatação de tabelas no terminal.
-  * **pandas** — agregações e exportação em **JSON/CSV**.
+  - **PyDriller** — varrer o histórico Git local para extrair commits, arquivos modificados e linhas adicionadas/removidas.
+  - **GitPython** — suporte a operações Git locais.
+
+- **CLI e relatórios:**
+
+  - **Typer** — criação da interface de linha de comando e documentação de parâmetros.
+  - **Rich** — formatação de tabelas no terminal.
+  - **pandas** — agregações e exportação em **JSON/CSV**.
+
+## Para instalar as dependências
+
+- `pip3 install -r requirements.txt`
+
+### Exemplo de uso da ferramenta
+
+- `python3 -m busfactor.cli analyze https://github.com/leticiascofield/logical-expression-satisfiability --format html`
+
+### Como abrir o HTML gerado
+
+- Após a execução, abra o Explorador de Arquivos na pasta do projeto e acesse o arquivo gerado report.html para visualizar o resultado.
+
+## Preparar o ambiente antes de rodar os testes
+
+1. Criar e ativar o ambiente virtual:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Instalar dependências e tornar o pacote importável (modo editable):
+
+```bash
+pip install -r requirements.txt
+pip install -e .
+```
+
+## Como rodar os testes
+
+Para executar todos os testes do projeto, utilize o comando:
+
+```bash
+pytest
+```
+
+Para executar os testes com mais detalhes (verbose):
+
+```bash
+pytest -v
+```
+
+Para executar os testes e gerar relatório de cobertura:
+
+```bash
+pytest --cov=busfactor --cov-report=html
+```
+
+Para executar um arquivo de testes específico:
+
+```bash
+pytest tests/test_bus_factor_analyzer.py
+pytest tests/test_cli.py
+pytest tests/test_data_models.py
+pytest tests/test_report_generators.py
+pytest tests/test_repository_manager.py
+pytest tests/test_bus_factor_analyzer_edge_cases.py
+```
+
+Para executar apenas um teste específico pelo nome:
+
+```bash
+pytest tests/test_bus_factor_analyzer.py::test_nome_do_teste -v
+```
