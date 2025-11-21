@@ -57,7 +57,7 @@ O resultado é uma lista de arquivos “de risco”, com informações sobre o a
 
 <br>
 
-## Explicação das possíveis tecnologias utilizadas
+## Explicação das tecnologias utilizadas
 
 - **Seleção de repositórios:**
 
@@ -72,7 +72,12 @@ O resultado é uma lista de arquivos “de risco”, com informações sobre o a
 
   - **Typer** — criação da interface de linha de comando e documentação de parâmetros.
   - **Rich** — formatação de tabelas no terminal.
-  - **pandas** — agregações e exportação em **JSON/CSV**.
+  - **pandas/plotly** — agregações e exportação em **JSON/CSV**.
+  
+- **Testes:**
+    - **pytest** — framework de testes utilizado para validar as funcionalidades do projeto.
+
+   - **pytest-cov** — geração de relatórios de cobertura de código .
 
 ## Para instalar as dependências
 
